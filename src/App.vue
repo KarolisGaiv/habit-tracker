@@ -18,5 +18,3 @@ import DayNavigation from './components/DayNavigation/DayNavigation.vue';
 
   <RouterView />
 </template>
-
-<style scoped></style>
