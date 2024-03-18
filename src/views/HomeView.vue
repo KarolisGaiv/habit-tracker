@@ -3,6 +3,7 @@
 <template>
   <main>
     <div>
+      <h3>THIS IS SEPARATE COMPONENT? OR MAYBE A PAGE?</h3>
       <p>placeholder to list all habits for that exact day</p>
       <h1>Habit list</h1>
       <ul>
