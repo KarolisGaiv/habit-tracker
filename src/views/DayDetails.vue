@@ -1,7 +1,9 @@
 <script setup>
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   id: {
-    type: String
+    type: String,
+    default: new Date()
   }
 });
 </script>
@@ -10,9 +12,6 @@ const props = defineProps({
   <main>
     <h1>{{ id }}</h1>
     <div>
-      <h3>THIS IS SEPARATE COMPONENT? OR MAYBE A PAGE?</h3>
-      <p>placeholder to list all habits for that exact day</p>
-      <h1>Habit list</h1>
       <ul>
         <li>Habit #1</li>
         <li>Habit #2</li>
