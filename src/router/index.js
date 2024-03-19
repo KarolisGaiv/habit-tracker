@@ -8,7 +8,8 @@ const router = createRouter({
     {
       path: '/day/:id',
       name: 'DayDetails',
-      component: DayDetails
+      component: DayDetails,
+      props: true
     }
     // {
     //   path: '/',

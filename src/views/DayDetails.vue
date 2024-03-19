@@ -1,7 +1,14 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  id: {
+    type: String
+  }
+});
+</script>
 
 <template>
   <main>
+    <h1>{{ id }}</h1>
     <div>
       <h3>THIS IS SEPARATE COMPONENT? OR MAYBE A PAGE?</h3>
       <p>placeholder to list all habits for that exact day</p>
