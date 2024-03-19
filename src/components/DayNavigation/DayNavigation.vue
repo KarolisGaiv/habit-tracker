@@ -28,7 +28,7 @@ const historicalWeek = computed(() => {
     </div>
     <div class="days-container">
       <ul>
-        <li v-for="(day, index) in historicalWeek" :key="index">{{ day }}</li>
+        <li v-for="(day, index) in historicalWeek" :key="index" class="day-wrapper">{{ day }}</li>
       </ul>
     </div>
   </div>
@@ -39,10 +39,23 @@ const historicalWeek = computed(() => {
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 2rem;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .calendar-container {
   margin-bottom: 1rem;
+}
+
+ul {
+  display: flex;
+  padding: 0;
+}
+
+.day-wrapper {
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
 }
 </style>
