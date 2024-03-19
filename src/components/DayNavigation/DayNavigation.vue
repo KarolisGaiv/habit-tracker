@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const date = ref(new Date());
 
@@ -28,7 +29,9 @@ const historicalWeek = computed(() => {
     </div>
     <div class="days-container">
       <ul>
-        <li v-for="(day, index) in historicalWeek" :key="index" class="day-wrapper">{{ day }}</li>
+        <li v-for="(day, index) in historicalWeek" :key="index" class="day-wrapper">
+          <RouterLink :to="{ name: 'DayDetails', params: { id: day } }">{{ day }}</RouterLink>
+        </li>
       </ul>
     </div>
   </div>
@@ -57,5 +60,10 @@ ul {
   display: flex;
   flex-direction: column;
   list-style-type: none;
+  cursor: pointer;
+}
+
+.day-wrapper:hover {
+  background: goldenrod;
 }
 </style>
