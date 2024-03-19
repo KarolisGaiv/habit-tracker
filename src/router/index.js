@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import DayDetails from '../views/DayDetails.vue';
+import DayDetails from '../views/DayDetails/DayDetails.vue';
+import AddHabit from '../views/AddHabit/AddHabit.vue';
 // import HomeView from '../views/HomeView.vue';
 
 const router = createRouter({
@@ -9,6 +10,12 @@ const router = createRouter({
       path: '/day/:id',
       name: 'DayDetails',
       component: DayDetails,
+      props: true
+    },
+    {
+      path: '/day/:id/addHabit',
+      name: 'AddHabit',
+      component: AddHabit,
       props: true
     }
     // {

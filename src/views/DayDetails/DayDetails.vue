@@ -11,21 +11,14 @@ const props = defineProps({
 <template>
   <main>
     <h1>{{ id }}</h1>
-    <div>
-      <ul>
-        <li>Habit #1</li>
-        <li>Habit #2</li>
-        <li>Habit #3</li>
-        <li>Habit #4</li>
-        <li>Habit #5</li>
-      </ul>
-    </div>
-
-    <div class="btn-wrapper">
-      <p>placeholder for add habit btn</p>
-      <button type="button">Add habit</button>
-    </div>
+    <div>No habits for this day</div>
   </main>
+  <div class="btn-wrapper">
+    <p>placeholder for add habit btn</p>
+    <RouterLink :to="{ name: 'AddHabit', params: { id } }"
+      ><button type="button">Add habit</button></RouterLink
+    >
+  </div>
 </template>
 
 <style scoped>
