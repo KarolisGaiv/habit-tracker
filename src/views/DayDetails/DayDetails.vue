@@ -16,15 +16,32 @@ function loadDayData() {
   recordedHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
 }
 
-function toggleHabitStatus(index) {
-  const habit = recordedHabits.value[0].habits[index];
-  habit.completed = !habit.completed;
+function toggleHabitCompletionStatus(habitToToggle) {
+  const currentHabit = recordedHabits.value.find((habit) => habit.name === habitToToggle.name);
 
-  const data = JSON.parse(localStorage.getItem('user'));
-  const currentDayData = data.find((day) => day.id === props.id);
+  let currentHabitDateEntry = currentHabit.dates.find((entry) => entry.date === props.id);
 
-  currentDayData.habits = recordedHabits.value[0].habits;
-  localStorage.setItem('user', JSON.stringify(data));
+  if (currentHabitDateEntry) {
+    currentHabitDateEntry.completed = !currentHabitDateEntry.completed;
+  } else {
+    currentHabitDateEntry = {
+      date: props.id,
+      completed: true
+    };
+    currentHabit.dates.push(currentHabitDateEntry);
+  }
+
+  // sync changes in localStorage
+  const storedHabits = JSON.parse(localStorage.getItem('user'));
+  const habitInStorage = storedHabits.find((habit) => habit.name === habitToToggle.name);
+
+  habitInStorage.dates = currentHabit.dates;
+  localStorage.setItem('user', JSON.stringify(storedHabits));
+}
+
+function isHabitCompletedToday(habit) {
+  const todayEntry = habit.dates.find((entry) => entry.date === props.id);
+  return todayEntry ? todayEntry.completed : false;
 }
 
 watchEffect(() => {
@@ -40,10 +57,10 @@ watchEffect(() => {
         <li class="habit-card" v-for="(habit, index) in recordedHabits" :key="index">
           <div class="habit-card-details">
             <h4>{{ habit.name }}</h4>
-            <h5>Completed: {{ habit.completed ? 'Yes' : 'No' }}</h5>
+            <h5>Completed Today: {{ isHabitCompletedToday(habit) ? 'Yes' : 'No' }}</h5>
           </div>
-          <button class="complete-btn" @click="toggleHabitStatus(index)" type="button">
-            {{ habit.completed ? 'Mark as Incomplete' : 'Mark as Completed' }}
+          <button class="complete-btn" @click="toggleHabitCompletionStatus(habit)" type="button">
+            {{ isHabitCompletedToday(habit) ? 'Mark as Incomplete' : 'Mark as Completed' }}
           </button>
         </li>
       </ul>
