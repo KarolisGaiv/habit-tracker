@@ -1,60 +1,43 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue';
-import { getDayInformation } from '../../utils/localStorage';
+import { ref } from 'vue';
 
-const { id } = defineProps({
+const props = defineProps({
   id: {
     type: String,
     default: new Date().toDateString()
   }
 });
 
-const habitName = ref('');
-const habits = ref();
+const newHabit = ref('');
 
-onMounted(() => {
-  const storedHabits = getDayInformation(id) || [];
-  habits.value = storedHabits;
-});
-
-const saveHabit = () => {
-  const newHabit = { id, name: habitName.value, done: false };
-  if (habits.value.length === 0) {
-    setDayHabits(newHabit);
-  } else {
-    habits.value.push({ id, habits: [newHabit] });
+function addHabit() {
+  if (!newHabit.value.trim()) {
+    alert("Habit can't be empty");
+    return;
   }
-  habitName.value = '';
-  setDayHabits(habits.value);
-};
 
-watchEffect(() => {
-  setDayHabits(habits.value);
-});
+  const newHabitObject = { name: newHabit.value, completed: false };
 
-// const saveHabit = () => {
-//   const newHabit = { name: habitName.value, done: false, id: props.id };
-//   const dayInformation = habits.value.find((habit) => habit.id === props.id);
-//   if (dayInformation) {
-//     dayInformation.habits.push(newHabit);
-//   } else {
-//     habits.value.push({ id: props.id, habits: [newHabit] });
-//   }
-//   habitName.value = '';
-//   localStorage.setItem('user', JSON.stringify(habits.value));
-// };
+  const data = JSON.parse(localStorage.getItem('user')) || [];
+  const todayData = data.find((entry) => entry.id === props.id);
 
-// watchEffect(() => {
-//   localStorage.setItem('user', JSON.stringify(habits.value));
-// });
+  if (todayData) {
+    todayData.habits.push(newHabitObject);
+  } else {
+    data.push({ id: props.id, habits: [newHabitObject] });
+  }
+
+  localStorage.setItem('user', JSON.stringify(data));
+  newHabit.value = '';
+}
 </script>
 
 <template>
   <h1>Add new habit to your day</h1>
   <p>selected day is {{ id }}</p>
-  <form class="wrapper" @submit.prevent="saveHabit">
+  <form class="wrapper" @submit.prevent="addHabit">
     <label for="habitName">New habit</label>
-    <input type="text" id="habitName" placeholder="Enter new habit" v-model="habitName" />
+    <input type="text" id="habitName" placeholder="Enter new habit" v-model="newHabit" />
     <button type="submit">Add Habit</button>
   </form>
 </template>

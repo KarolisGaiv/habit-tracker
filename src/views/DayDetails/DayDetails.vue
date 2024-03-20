@@ -1,36 +1,37 @@
 <script setup>
-import { ref, watch, watchEffect } from 'vue';
-import { getDayInformation } from '../../utils/localStorage';
+import { ref, watchEffect } from 'vue';
 
-const { id } = defineProps({
+const props = defineProps({
   id: {
     type: String,
-    default: new Date().toDateString()
+    default: () => new Date().toISOString().slice(0, 10)
   }
 });
 
-const recordedHabits = ref({});
+const recordedHabits = ref([]);
+
+function loadDayData(dayID) {
+  const data = localStorage.getItem('user');
+  if (data) {
+    const days = JSON.parse(data);
+    const dayInfo = days.find((day) => day.id === dayID);
+    recordedHabits.value = dayInfo ? [dayInfo] : [];
+  } else {
+    recordedHabits.value = [];
+  }
+  console.log("i've just loaded data for", dayID);
+  console.log('this is data for the day:', recordedHabits.value);
+}
 
 watchEffect(() => {
-  recordedHabits.value = getDayInformation(id);
+  loadDayData(props.id);
 });
-
-// watchEffect(
-//   () => id.value,
-//   (newId) => {
-//     recordedHabits.value = getDayInformation(newId);
-//   }
-// );
 </script>
 
 <template>
   <main>
-    <h1>{{ id }}</h1>
-    <h3>
-      <p>this is from localStorage</p>
-      {{ recordedHabits }}
-    </h3>
-    <div>No habits for this day</div>
+    <h1>{{ props.id }}</h1>
+    <h3>Daily Habits</h3>
   </main>
   <div class="btn-wrapper">
     <p>placeholder for add habit btn</p>
