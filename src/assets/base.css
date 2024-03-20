@@ -15,11 +15,13 @@
   --vt-c-text-light-2: rgb(60 60 60 / 66%);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgb(235 235 235 / 64%);
+  --gentle-main: rgb(255 242 234);
 }
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
+  /* --color-background: var(--vt-c-white); */
+  --color-background: var(--gentle-main);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
   --color-border: var(--vt-c-divider-light-2);
