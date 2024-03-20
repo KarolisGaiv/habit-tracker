@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { RouterLink } from 'vue-router';
+import { format, parseISO } from 'date-fns';
 
 const selectedDate = ref(new Date());
 
@@ -14,6 +15,14 @@ const historicalWeek = computed(() => {
 
   return days.reverse();
 });
+
+const formatDay = (date) => {
+  return format(parseISO(date), 'EEE d');
+};
+
+const currentMonth = computed(() => {
+  return format(selectedDate.value, 'MMMM');
+});
 </script>
 
 <template>
@@ -22,10 +31,13 @@ const historicalWeek = computed(() => {
       <label for="calendar"></label>
       <input type="date" id="calendar" v-model="selectedDate" />
     </div>
+    <span class="month-indicator">{{ currentMonth }}</span>
     <div class="days-container">
       <ul>
         <li v-for="(day, index) in historicalWeek" :key="index" class="day-wrapper">
-          <RouterLink :to="{ name: 'DayDetails', params: { id: day } }">{{ day }}</RouterLink>
+          <RouterLink :to="{ name: 'DayDetails', params: { id: day } }">
+            {{ formatDay(day) }}</RouterLink
+          >
         </li>
       </ul>
     </div>
