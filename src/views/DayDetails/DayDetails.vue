@@ -10,15 +10,25 @@ const props = defineProps({
 
 const recordedHabits = ref([]);
 
-function loadDayData(dayID) {
-  const data = localStorage.getItem('user');
-  if (data) {
-    const days = JSON.parse(data);
-    const dayInfo = days.find((day) => day.id === dayID);
-    recordedHabits.value = dayInfo ? [dayInfo] : [];
-  } else {
-    recordedHabits.value = [];
-  }
+function loadDayData() {
+  const data = JSON.parse(localStorage.getItem('user'));
+  // recordedHabits.value = [];
+
+  // for (let habit = 0; habit < data.length; habit += 1) {
+  //   const habitObj = {
+  //     name: data[habit].name,
+  //     dateAdded: data[habit].dateAdded,
+  //     dates: data[habit].dates
+  //   };
+
+  //   if (habitObj.dateAdded <= props.id) {
+  //     recordedHabits.value.push(habitObj);
+  //   }
+  // }
+  // const test = data.filter((habit) => habit.dateAdded <= props.id);
+  // console.log('this is props.id', props.id);
+  recordedHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
+  console.log('this is supposedly recordedHabits', recordedHabits.value);
 }
 
 function toggleHabitStatus(index) {
@@ -33,7 +43,7 @@ function toggleHabitStatus(index) {
 }
 
 watchEffect(() => {
-  loadDayData(props.id);
+  loadDayData();
 });
 </script>
 
@@ -42,7 +52,7 @@ watchEffect(() => {
     <h3>Daily Habits</h3>
     <div v-if="recordedHabits.length > 0" class="habits-wrapper">
       <ul>
-        <li class="habit-card" v-for="(habit, index) in recordedHabits[0].habits" :key="index">
+        <li class="habit-card" v-for="(habit, index) in recordedHabits" :key="index">
           <div class="habit-card-details">
             <h4>{{ habit.name }}</h4>
             <h5>Completed: {{ habit.completed ? 'Yes' : 'No' }}</h5>

@@ -10,25 +10,49 @@ const props = defineProps({
 
 const newHabit = ref('');
 
+// function addHabit() {
+//   if (!newHabit.value.trim()) {
+//     alert("Habit can't be empty");
+//     return;
+//   }
+
+//   const newHabitObject = { name: newHabit.value, completed: false };
+
+//   const data = JSON.parse(localStorage.getItem('user')) || [];
+//   const todayData = data.find((entry) => entry.id === props.id);
+
+//   if (todayData) {
+//     todayData.habits.push(newHabitObject);
+//   } else {
+//     data.push({ id: props.id, habits: [newHabitObject] });
+//   }
+
+//   localStorage.setItem('user', JSON.stringify(data));
+//   newHabit.value = '';
+// }
+
 function addHabit() {
   if (!newHabit.value.trim()) {
     alert("Habit can't be empty");
     return;
   }
 
-  const newHabitObject = { name: newHabit.value, completed: false };
+  const newHabitObject = {
+    name: newHabit.value.trim(),
+    dateAdded: props.id,
+    dates: []
+  };
 
   const data = JSON.parse(localStorage.getItem('user')) || [];
-  const todayData = data.find((entry) => entry.id === props.id);
+  const doesHabitExist = data.some((habit) => habit.name === newHabitObject.name);
 
-  if (todayData) {
-    todayData.habits.push(newHabitObject);
+  if (!doesHabitExist) {
+    data.push(newHabitObject);
+    localStorage.setItem('user', JSON.stringify(data));
+    newHabit.value = '';
   } else {
-    data.push({ id: props.id, habits: [newHabitObject] });
+    alert('Habit already exist');
   }
-
-  localStorage.setItem('user', JSON.stringify(data));
-  newHabit.value = '';
 }
 </script>
 
