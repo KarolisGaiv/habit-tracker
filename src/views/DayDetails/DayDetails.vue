@@ -34,6 +34,7 @@ watchEffect(() => {
       <ul>
         <li v-for="(habit, index) in recordedHabits[0].habits" :key="index">
           {{ habit.name }} - {{ habit.completed }}
+          <button type="button">toggle status</button>
         </li>
       </ul>
     </div>
