@@ -10,27 +10,6 @@ const props = defineProps({
 
 const newHabit = ref('');
 
-// function addHabit() {
-//   if (!newHabit.value.trim()) {
-//     alert("Habit can't be empty");
-//     return;
-//   }
-
-//   const newHabitObject = { name: newHabit.value, completed: false };
-
-//   const data = JSON.parse(localStorage.getItem('user')) || [];
-//   const todayData = data.find((entry) => entry.id === props.id);
-
-//   if (todayData) {
-//     todayData.habits.push(newHabitObject);
-//   } else {
-//     data.push({ id: props.id, habits: [newHabitObject] });
-//   }
-
-//   localStorage.setItem('user', JSON.stringify(data));
-//   newHabit.value = '';
-// }
-
 function addHabit() {
   if (!newHabit.value.trim()) {
     alert("Habit can't be empty");

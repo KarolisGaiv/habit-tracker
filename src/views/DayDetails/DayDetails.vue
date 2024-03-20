@@ -11,24 +11,9 @@ const props = defineProps({
 const recordedHabits = ref([]);
 
 function loadDayData() {
-  const data = JSON.parse(localStorage.getItem('user'));
-  // recordedHabits.value = [];
+  const data = JSON.parse(localStorage.getItem('user')) || [];
 
-  // for (let habit = 0; habit < data.length; habit += 1) {
-  //   const habitObj = {
-  //     name: data[habit].name,
-  //     dateAdded: data[habit].dateAdded,
-  //     dates: data[habit].dates
-  //   };
-
-  //   if (habitObj.dateAdded <= props.id) {
-  //     recordedHabits.value.push(habitObj);
-  //   }
-  // }
-  // const test = data.filter((habit) => habit.dateAdded <= props.id);
-  // console.log('this is props.id', props.id);
   recordedHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
-  console.log('this is supposedly recordedHabits', recordedHabits.value);
 }
 
 function toggleHabitStatus(index) {
