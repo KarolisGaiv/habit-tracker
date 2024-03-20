@@ -47,7 +47,9 @@ watchEffect(() => {
             <h4>{{ habit.name }}</h4>
             <h5>Completed: {{ habit.completed ? 'Yes' : 'No' }}</h5>
           </div>
-          <button @click="toggleHabitStatus(index)" type="button">toggle status</button>
+          <button class="complete-btn" @click="toggleHabitStatus(index)" type="button">
+            {{ habit.completed ? 'Mark as Incomplete' : 'Mark as Completed' }}
+          </button>
         </li>
       </ul>
     </div>
@@ -84,6 +86,25 @@ ul {
   justify-content: space-between;
   padding: 1rem;
   margin: 0.5rem 0;
+}
+
+.complete-btn {
+  background-color: #ff6347;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+  outline: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+}
+
+.complete-btn:hover,
+.complete-btn:focus {
+  background-color: #e55a3c;
 }
 
 .btn-wrapper {
