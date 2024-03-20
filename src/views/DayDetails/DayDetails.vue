@@ -44,6 +44,15 @@ function isHabitCompletedToday(habit) {
   return todayEntry ? todayEntry.completed : false;
 }
 
+function countCompletedOccurrences(targetedHabit) {
+  const allHabits = JSON.parse(localStorage.getItem('user'));
+  const matchingHabit = allHabits.find((hab) => hab.name === targetedHabit.name);
+  const completedCount = matchingHabit.dates.reduce((accumulator, item) => {
+    return accumulator + (item.completed ? 1 : 0);
+  }, 0);
+  return completedCount;
+}
+
 watchEffect(() => {
   loadDayData();
 });
@@ -58,7 +67,9 @@ watchEffect(() => {
           <div class="habit-card-details">
             <h4>{{ habit.name }}</h4>
             <h5>Completed Today: {{ isHabitCompletedToday(habit) ? 'Yes' : 'No' }}</h5>
+            <h5>Total times completed: {{ countCompletedOccurrences(habit) }}</h5>
           </div>
+
           <button class="complete-btn" @click="toggleHabitCompletionStatus(habit)" type="button">
             {{ isHabitCompletedToday(habit) ? 'Mark as Incomplete' : 'Mark as Completed' }}
           </button>
