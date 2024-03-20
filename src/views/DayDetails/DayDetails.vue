@@ -21,6 +21,17 @@ function loadDayData(dayID) {
   }
 }
 
+function toggleHabitStatus(index) {
+  const habit = recordedHabits.value[0].habits[index];
+  habit.completed = !habit.completed;
+
+  const data = JSON.parse(localStorage.getItem('user'));
+  const currentDayData = data.find((day) => day.id === props.id);
+
+  currentDayData.habits = recordedHabits.value[0].habits;
+  localStorage.setItem('user', JSON.stringify(data));
+}
+
 watchEffect(() => {
   loadDayData(props.id);
 });
@@ -34,7 +45,7 @@ watchEffect(() => {
       <ul>
         <li v-for="(habit, index) in recordedHabits[0].habits" :key="index">
           {{ habit.name }} - {{ habit.completed }}
-          <button type="button">toggle status</button>
+          <button @click="toggleHabitStatus(index)" type="button">toggle status</button>
         </li>
       </ul>
     </div>
