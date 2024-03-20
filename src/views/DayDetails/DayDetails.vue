@@ -38,13 +38,15 @@ watchEffect(() => {
 </script>
 
 <template>
-  <main>
-    <h1>{{ props.id }}</h1>
+  <main class="day-container">
     <h3>Daily Habits</h3>
-    <div v-if="recordedHabits.length > 0">
+    <div v-if="recordedHabits.length > 0" class="habits-wrapper">
       <ul>
-        <li v-for="(habit, index) in recordedHabits[0].habits" :key="index">
-          {{ habit.name }} - {{ habit.completed }}
+        <li class="habit-card" v-for="(habit, index) in recordedHabits[0].habits" :key="index">
+          <div class="habit-card-details">
+            <h4>{{ habit.name }}</h4>
+            <h5>Completed: {{ habit.completed ? 'Yes' : 'No' }}</h5>
+          </div>
           <button @click="toggleHabitStatus(index)" type="button">toggle status</button>
         </li>
       </ul>
@@ -63,9 +65,25 @@ watchEffect(() => {
 main {
   display: flex;
   flex-direction: column;
-  height: 80vh;
-  border: 1px solid orange;
+}
+
+.habits-wrapper {
+  margin: 1rem 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.habit-card {
+  background: rgb(0 128 128);
   border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 0.5rem 0;
 }
 
 .btn-wrapper {

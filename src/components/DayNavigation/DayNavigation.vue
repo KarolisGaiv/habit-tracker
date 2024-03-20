@@ -46,10 +46,7 @@ const currentMonth = computed(() => {
 
 <style scoped>
 .wrapper {
-  border: 1px solid black;
-  border-radius: 5px;
   margin-bottom: 2rem;
-  padding: 0.5rem;
 }
 
 .calendar-container {
