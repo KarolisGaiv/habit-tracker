@@ -1,11 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import DayDetails from '../views/DayDetails/DayDetails.vue';
 import AddHabit from '../views/AddHabit/AddHabit.vue';
-// import HomeView from '../views/HomeView.vue';
+import DashboardView from '../views/Dashboard/DashboardView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'Dahsboard',
+      component: DashboardView
+    },
     {
       path: '/day/:id',
       name: 'DayDetails',
