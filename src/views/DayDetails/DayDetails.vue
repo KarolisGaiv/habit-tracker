@@ -83,11 +83,6 @@ function countStreak(targetedHabit) {
     previousDate = sortedDates[i].date;
   }
 
-  const today = new Date().toISOString().slice(0, 10);
-  if (differenceInDays(parseISO(today), parseISO(previousDate)) !== 1) {
-    currentStreak = 1;
-  }
-
   return { longestStreak, currentStreak };
 }
 
