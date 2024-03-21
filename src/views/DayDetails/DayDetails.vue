@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
 import { differenceInDays, parseISO } from 'date-fns';
+import { getLocalStorageData } from '../../utils/localStorageUtils';
 import HabitCard from './HabitCard.vue';
 
 const props = defineProps({
@@ -11,15 +12,17 @@ const props = defineProps({
 });
 
 const recordedHabits = ref([]);
+const recordedDayHabits = ref([]);
 
 function loadDayData() {
-  const data = JSON.parse(localStorage.getItem('user')) || [];
+  const data = getLocalStorageData();
+  recordedHabits.value = data;
 
-  recordedHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
+  recordedDayHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
 }
 
 function toggleHabitCompletionStatus(habitToToggle) {
-  const currentHabit = recordedHabits.value.find((habit) => habit.name === habitToToggle.name);
+  const currentHabit = recordedDayHabits.value.find((habit) => habit.name === habitToToggle.name);
 
   let currentHabitDateEntry = currentHabit.dates.find((entry) => entry.date === props.id);
 
@@ -34,11 +37,10 @@ function toggleHabitCompletionStatus(habitToToggle) {
   }
 
   // sync changes in localStorage
-  const storedHabits = JSON.parse(localStorage.getItem('user'));
-  const habitInStorage = storedHabits.find((habit) => habit.name === habitToToggle.name);
+  const habitInStorage = recordedHabits.value.find((habit) => habit.name === habitToToggle.name);
 
   habitInStorage.dates = currentHabit.dates;
-  localStorage.setItem('user', JSON.stringify(storedHabits));
+  localStorage.setItem('user', JSON.stringify(recordedHabits.value));
 }
 
 function isHabitCompletedToday(habit) {
@@ -47,8 +49,7 @@ function isHabitCompletedToday(habit) {
 }
 
 function countCompletedOccurrences(targetedHabit) {
-  const allHabits = JSON.parse(localStorage.getItem('user'));
-  const matchingHabit = allHabits.find((hab) => hab.name === targetedHabit.name);
+  const matchingHabit = recordedHabits.value.find((hab) => hab.name === targetedHabit.name);
   const completedCount = matchingHabit.dates.reduce((accumulator, date) => {
     return accumulator + (date.completed ? 1 : 0);
   }, 0);
@@ -56,8 +57,7 @@ function countCompletedOccurrences(targetedHabit) {
 }
 
 function countStreak(targetedHabit) {
-  const allHabits = JSON.parse(localStorage.getItem('user'));
-  const matchingHabit = allHabits.find((hab) => hab.name === targetedHabit.name);
+  const matchingHabit = recordedHabits.value.find((hab) => hab.name === targetedHabit.name);
 
   if (!matchingHabit || matchingHabit.dates.length === 0) {
     return { longestStreak: 0, currentStreak: 0 };
@@ -65,8 +65,7 @@ function countStreak(targetedHabit) {
 
   // sort dates from oldest to newest, but also filter only completed habits
   const sortedDates = matchingHabit.dates
-    .filter((date) => date.completed)
-    .filter((date) => date.date <= props.id)
+    .filter((date) => date.completed && date.date <= props.id)
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   if (sortedDates.length === 0) {
@@ -107,10 +106,10 @@ watchEffect(() => {
 <template>
   <main class="day-container">
     <h3>Daily Habits</h3>
-    <div v-if="recordedHabits.length > 0" class="habits-wrapper">
+    <div v-if="recordedDayHabits.length > 0" class="habits-wrapper">
       <ul>
         <HabitCard
-          v-for="(habit, index) in recordedHabits"
+          v-for="(habit, index) in recordedDayHabits"
           :key="index"
           :habit="habit"
           :toggleHabitCompletionStatus="toggleHabitCompletionStatus"
