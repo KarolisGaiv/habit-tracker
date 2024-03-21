@@ -71,18 +71,21 @@ function countStreak(targetedHabit) {
   let currentStreak = 1;
   let previousDate = sortedDates[0].date;
 
-  for (let i = 1; i < sortedDates.length - 1; i += 1) {
-    const diffDays = differenceInDays(new Date(sortedDates[i].date), new Date(previousDate));
+  for (let i = 1; i < sortedDates.length; i += 1) {
+    const diffDays = differenceInDays(parseISO(sortedDates[i].date), parseISO(previousDate));
 
     if (diffDays === 1) {
       currentStreak += 1;
-      if (currentStreak > longestStreak) {
-        longestStreak = currentStreak;
-      }
+      longestStreak = Math.max(longestStreak, currentStreak);
     } else {
-      currentStreak = 1;
+      currentStreak = diffDays === 0 ? currentStreak : 1;
     }
     previousDate = sortedDates[i].date;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  if (differenceInDays(parseISO(today), parseISO(previousDate)) !== 1) {
+    currentStreak = 1;
   }
 
   return { longestStreak, currentStreak };
