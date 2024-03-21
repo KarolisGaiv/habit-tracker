@@ -65,9 +65,14 @@ function countStreak(targetedHabit) {
   // sort dates from oldest to newest, but also filter only completed habits
   const sortedDates = matchingHabit.dates
     .filter((date) => date.completed)
+    .filter((date) => date.date <= props.id)
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  let longestStreak = 0;
+  if (sortedDates.length === 0) {
+    return { longestStreak: 0, currentStreak: 0 };
+  }
+
+  let longestStreak = 1;
   let currentStreak = 1;
   let previousDate = sortedDates[0].date;
 
@@ -78,9 +83,16 @@ function countStreak(targetedHabit) {
       currentStreak += 1;
       longestStreak = Math.max(longestStreak, currentStreak);
     } else {
-      currentStreak = diffDays === 0 ? currentStreak : 1;
+      currentStreak = 1;
     }
+    longestStreak = Math.max(longestStreak, currentStreak);
     previousDate = sortedDates[i].date;
+  }
+
+  const viewedDayIsAfterLastCompletion =
+    differenceInDays(parseISO(props.id), parseISO(previousDate)) > 0;
+  if (viewedDayIsAfterLastCompletion) {
+    currentStreak = 0; // Reset current streak if the viewed day has no completion
   }
 
   return { longestStreak, currentStreak };
