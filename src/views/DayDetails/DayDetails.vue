@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
+import { differenceInDays, parseISO } from 'date-fns';
 
 const props = defineProps({
   id: {
@@ -47,10 +48,44 @@ function isHabitCompletedToday(habit) {
 function countCompletedOccurrences(targetedHabit) {
   const allHabits = JSON.parse(localStorage.getItem('user'));
   const matchingHabit = allHabits.find((hab) => hab.name === targetedHabit.name);
-  const completedCount = matchingHabit.dates.reduce((accumulator, item) => {
-    return accumulator + (item.completed ? 1 : 0);
+  const completedCount = matchingHabit.dates.reduce((accumulator, date) => {
+    return accumulator + (date.completed ? 1 : 0);
   }, 0);
   return completedCount;
+}
+
+function countStreak(targetedHabit) {
+  const allHabits = JSON.parse(localStorage.getItem('user'));
+  const matchingHabit = allHabits.find((hab) => hab.name === targetedHabit.name);
+
+  if (!matchingHabit || matchingHabit.dates.length === 0) {
+    return { longestStreak: 0, currentStreak: 0 };
+  }
+
+  // sort dates from oldest to newest, but also filter only completed habits
+  const sortedDates = matchingHabit.dates
+    .filter((date) => date.completed)
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  let longestStreak = 0;
+  let currentStreak = 1;
+  let previousDate = sortedDates[0].date;
+
+  for (let i = 1; i < sortedDates.length - 1; i += 1) {
+    const diffDays = differenceInDays(new Date(sortedDates[i].date), new Date(previousDate));
+
+    if (diffDays === 1) {
+      currentStreak += 1;
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      }
+    } else {
+      currentStreak = 1;
+    }
+    previousDate = sortedDates[i].date;
+  }
+
+  return { longestStreak, currentStreak };
 }
 
 watchEffect(() => {
@@ -68,6 +103,10 @@ watchEffect(() => {
             <h4>{{ habit.name }}</h4>
             <h5>Completed Today: {{ isHabitCompletedToday(habit) ? 'Yes' : 'No' }}</h5>
             <h5>Total times completed: {{ countCompletedOccurrences(habit) }}</h5>
+            <div>
+              <h5>Longest streak: {{ countStreak(habit).longestStreak }}</h5>
+              <h5>Current streak: {{ countStreak(habit).currentStreak }}</h5>
+            </div>
           </div>
 
           <button class="complete-btn" @click="toggleHabitCompletionStatus(habit)" type="button">
