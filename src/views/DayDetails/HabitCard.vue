@@ -4,7 +4,8 @@ const props = defineProps({
   toggleHabitCompletionStatus: Function,
   isHabitCompletedToday: Function,
   countCompletedOccurrences: Function,
-  countStreak: Function
+  countStreak: Function,
+  date: String
 });
 </script>
 
@@ -21,7 +22,7 @@ const props = defineProps({
     </div>
     <button
       class="complete-btn"
-      @click="props.toggleHabitCompletionStatus(props.habit)"
+      @click="props.toggleHabitCompletionStatus(props.habit, props.date)"
       type="button"
     >
       {{ props.isHabitCompletedToday(props.habit) ? 'Mark as Incomplete' : 'Mark as Completed' }}

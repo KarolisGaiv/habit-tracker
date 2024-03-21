@@ -2,6 +2,8 @@
 import { ref, watchEffect } from 'vue';
 import { differenceInDays, parseISO } from 'date-fns';
 import storageUtility from '../../utils/storageUtility';
+import { findHabitByName } from '../../utils/habitUtils';
+import { useToggleHabitCompletion } from '../../composables/useHabits';
 import HabitCard from './HabitCard.vue';
 
 const props = defineProps({
@@ -13,34 +15,13 @@ const props = defineProps({
 
 const userHabits = ref([]);
 const recordedDayHabits = ref([]);
+const { toggleHabitCompletionStatus } = useToggleHabitCompletion(userHabits);
 
 function loadDayData() {
   const data = storageUtility.getData();
 
   userHabits.value = data;
   recordedDayHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
-}
-
-function toggleHabitCompletionStatus(habitToToggle) {
-  const currentHabit = recordedDayHabits.value.find((habit) => habit.name === habitToToggle.name);
-
-  let currentHabitDateEntry = currentHabit.dates.find((entry) => entry.date === props.id);
-
-  if (currentHabitDateEntry) {
-    currentHabitDateEntry.completed = !currentHabitDateEntry.completed;
-  } else {
-    currentHabitDateEntry = {
-      date: props.id,
-      completed: true
-    };
-    currentHabit.dates.push(currentHabitDateEntry);
-  }
-
-  // sync changes in localStorage
-  const habitInStorage = userHabits.value.find((habit) => habit.name === habitToToggle.name);
-
-  habitInStorage.dates = currentHabit.dates;
-  storageUtility.saveData(userHabits.value);
 }
 
 function isHabitCompletedToday(habit) {
@@ -116,6 +97,7 @@ watchEffect(() => {
           :isHabitCompletedToday="isHabitCompletedToday"
           :countCompletedOccurrences="countCompletedOccurrences"
           :countStreak="countStreak"
+          :date="props.id"
         />
       </ul>
     </div>
@@ -151,4 +133,4 @@ ul {
   margin-top: 2rem;
 }
 </style>
-../../utils/storageUtility
+../../utils/storageUtility ../../utils/habitUtils
