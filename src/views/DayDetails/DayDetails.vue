@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
 import { differenceInDays, parseISO } from 'date-fns';
-import { getLocalStorageData } from '../../utils/localStorageUtils';
+import storageUtility from '../../utils/storageUtility';
 import HabitCard from './HabitCard.vue';
 
 const props = defineProps({
@@ -11,13 +11,13 @@ const props = defineProps({
   }
 });
 
-const recordedHabits = ref([]);
+const userHabits = ref([]);
 const recordedDayHabits = ref([]);
 
 function loadDayData() {
-  const data = getLocalStorageData();
-  recordedHabits.value = data;
+  const data = storageUtility.getData();
 
+  userHabits.value = data;
   recordedDayHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
 }
 
@@ -37,10 +37,10 @@ function toggleHabitCompletionStatus(habitToToggle) {
   }
 
   // sync changes in localStorage
-  const habitInStorage = recordedHabits.value.find((habit) => habit.name === habitToToggle.name);
+  const habitInStorage = userHabits.value.find((habit) => habit.name === habitToToggle.name);
 
   habitInStorage.dates = currentHabit.dates;
-  localStorage.setItem('user', JSON.stringify(recordedHabits.value));
+  storageUtility.saveData(userHabits.value);
 }
 
 function isHabitCompletedToday(habit) {
@@ -49,7 +49,7 @@ function isHabitCompletedToday(habit) {
 }
 
 function countCompletedOccurrences(targetedHabit) {
-  const matchingHabit = recordedHabits.value.find((hab) => hab.name === targetedHabit.name);
+  const matchingHabit = userHabits.value.find((hab) => hab.name === targetedHabit.name);
   const completedCount = matchingHabit.dates.reduce((accumulator, date) => {
     return accumulator + (date.completed ? 1 : 0);
   }, 0);
@@ -57,7 +57,7 @@ function countCompletedOccurrences(targetedHabit) {
 }
 
 function countStreak(targetedHabit) {
-  const matchingHabit = recordedHabits.value.find((hab) => hab.name === targetedHabit.name);
+  const matchingHabit = userHabits.value.find((hab) => hab.name === targetedHabit.name);
 
   if (!matchingHabit || matchingHabit.dates.length === 0) {
     return { longestStreak: 0, currentStreak: 0 };
@@ -151,3 +151,4 @@ ul {
   margin-top: 2rem;
 }
 </style>
+../../utils/storageUtility
