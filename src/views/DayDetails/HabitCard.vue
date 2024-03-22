@@ -26,7 +26,11 @@ function isHabitCompletedToday(habit, date) {
 
 function countCompletedOccurrences(habit) {
   const habitDetails = findHabitByName(props.allHabits, habit.name);
-  const completedCount = habitDetails.dates.reduce((acc, date) => {
+
+  // filter dates to not include anything further than current date
+  const relevantDates = habitDetails.dates.filter((date) => date.date <= props.date);
+
+  const completedCount = relevantDates.reduce((acc, date) => {
     return acc + (date.completed ? 1 : 0);
   }, 0);
   return completedCount;
