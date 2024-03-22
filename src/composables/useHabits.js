@@ -36,7 +36,7 @@ export function useHabitCompletion() {
 
 export function useHabitCompletionCounting(userHabits) {
   const countCompletedOccurrences = (habit) => {
-    const habitDetails = findHabitByName(userHabits.value, habit.name);
+    const habitDetails = findHabitByName(userHabits, habit.name);
     const completedCount = habitDetails.dates.reduce((acc, date) => {
       return acc + (date.completed ? 1 : 0);
     }, 0);

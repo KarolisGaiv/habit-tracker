@@ -8,14 +8,13 @@ import {
 const props = defineProps({
   habit: Object,
   toggleHabitCompletionStatus: Function,
-  // isHabitCompletedToday: Function,
-  countCompletedOccurrences: Function,
   countStreak: Function,
-  date: String
+  date: String,
+  allHabits: Object
 });
 
 const { isHabitCompletedToday } = useHabitCompletion();
-const { toggleHabitCompletionStatus } = useToggleHabitCompletion();
+const { countCompletedOccurrences } = useHabitCompletionCounting(props.allHabits);
 </script>
 
 <template>

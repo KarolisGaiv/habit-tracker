@@ -2,11 +2,7 @@
 import { ref, watchEffect } from 'vue';
 import { differenceInDays, parseISO } from 'date-fns';
 import storageUtility from '../../utils/storageUtility';
-import {
-  useToggleHabitCompletion,
-  useHabitCompletion,
-  useHabitCompletionCounting
-} from '../../composables/useHabits';
+import { useToggleHabitCompletion } from '../../composables/useHabits';
 import HabitCard from './HabitCard.vue';
 
 const props = defineProps({
@@ -25,14 +21,6 @@ function loadDayData() {
 
   userHabits.value = data;
   recordedDayHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
-}
-
-function countCompletedOccurrences(targetedHabit) {
-  const matchingHabit = userHabits.value.find((hab) => hab.name === targetedHabit.name);
-  const completedCount = matchingHabit.dates.reduce((accumulator, date) => {
-    return accumulator + (date.completed ? 1 : 0);
-  }, 0);
-  return completedCount;
 }
 
 function countStreak(targetedHabit) {
@@ -92,9 +80,9 @@ watchEffect(() => {
           :key="index"
           :habit="habit"
           :toggleHabitCompletionStatus="toggleHabitCompletionStatus"
-          :countCompletedOccurrences="useHabitCompletionCounting"
           :countStreak="countStreak"
           :date="props.id"
+          :allHabits="userHabits"
         />
       </ul>
     </div>
