@@ -1,20 +1,33 @@
 <script setup>
+import { computed } from 'vue';
 import {
   useToggleHabitCompletion,
   useHabitCompletion,
-  useHabitCompletionCounting
+  useHabitCompletionCounting,
+  useHabitStreak
 } from '../../composables/useHabits';
 
 const props = defineProps({
-  habit: Object,
-  toggleHabitCompletionStatus: Function,
-  countStreak: Function,
-  date: String,
-  allHabits: Object
+  habit: {
+    type: Object,
+    default: () => ({})
+  },
+  date: {
+    type: String,
+    default: () => new Date().toISOString().slice(0, 10)
+  },
+  allHabits: {
+    type: Object,
+    default: () => ({})
+  }
 });
 
 const { isHabitCompletedToday } = useHabitCompletion();
 const { countCompletedOccurrences } = useHabitCompletionCounting(props.allHabits);
+const { countStreak } = useHabitStreak(props.habit, props.allHabits, props.date);
+const { toggleHabitCompletionStatus } = useToggleHabitCompletion(props.allHabits);
+
+const streakInfo = computed(() => countStreak());
 </script>
 
 <template>
@@ -24,13 +37,13 @@ const { countCompletedOccurrences } = useHabitCompletionCounting(props.allHabits
       <h5>Completed Today: {{ isHabitCompletedToday(habit, date) ? 'Yes' : 'No' }}</h5>
       <h5>Total times completed: {{ countCompletedOccurrences(habit) }}</h5>
       <div>
-        <h5>Longest streak: {{ countStreak(habit).longestStreak }}</h5>
-        <h5>Current streak: {{ countStreak(habit).currentStreak }}</h5>
+        <h5>Longest streak: {{ streakInfo.longestStreak }}</h5>
+        <h5>Current streak: {{ streakInfo.currentStreak }}</h5>
       </div>
     </div>
     <button
       class="complete-btn"
-      @click="props.toggleHabitCompletionStatus(props.habit, props.date)"
+      @click="toggleHabitCompletionStatus(props.habit, props.date)"
       type="button"
     >
       {{ isHabitCompletedToday(habit, date) ? 'Mark as Incomplete' : 'Mark as Completed' }}

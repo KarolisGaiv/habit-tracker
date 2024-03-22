@@ -1,8 +1,6 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
-import { differenceInDays, parseISO } from 'date-fns';
 import storageUtility from '../../utils/storageUtility';
-import { useToggleHabitCompletion } from '../../composables/useHabits';
 import HabitCard from './HabitCard.vue';
 
 const props = defineProps({
@@ -14,55 +12,12 @@ const props = defineProps({
 
 const userHabits = ref([]);
 const recordedDayHabits = ref([]);
-const { toggleHabitCompletionStatus } = useToggleHabitCompletion(userHabits);
 
 function loadDayData() {
   const data = storageUtility.getData();
 
   userHabits.value = data;
   recordedDayHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
-}
-
-function countStreak(targetedHabit) {
-  const matchingHabit = userHabits.value.find((hab) => hab.name === targetedHabit.name);
-
-  if (!matchingHabit || matchingHabit.dates.length === 0) {
-    return { longestStreak: 0, currentStreak: 0 };
-  }
-
-  // sort dates from oldest to newest, but also filter only completed habits
-  const sortedDates = matchingHabit.dates
-    .filter((date) => date.completed && date.date <= props.id)
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  if (sortedDates.length === 0) {
-    return { longestStreak: 0, currentStreak: 0 };
-  }
-
-  let longestStreak = 1;
-  let currentStreak = 1;
-  let previousDate = sortedDates[0].date;
-
-  for (let i = 1; i < sortedDates.length; i += 1) {
-    const diffDays = differenceInDays(parseISO(sortedDates[i].date), parseISO(previousDate));
-
-    if (diffDays === 1) {
-      currentStreak += 1;
-      longestStreak = Math.max(longestStreak, currentStreak);
-    } else {
-      currentStreak = 1;
-    }
-    longestStreak = Math.max(longestStreak, currentStreak);
-    previousDate = sortedDates[i].date;
-  }
-
-  const viewedDayIsAfterLastCompletion =
-    differenceInDays(parseISO(props.id), parseISO(previousDate)) > 0;
-  if (viewedDayIsAfterLastCompletion) {
-    currentStreak = 0; // Reset current streak if the viewed day has no completion
-  }
-
-  return { longestStreak, currentStreak };
 }
 
 watchEffect(() => {
@@ -79,8 +34,6 @@ watchEffect(() => {
           v-for="(habit, index) in recordedDayHabits"
           :key="index"
           :habit="habit"
-          :toggleHabitCompletionStatus="toggleHabitCompletionStatus"
-          :countStreak="countStreak"
           :date="props.id"
           :allHabits="userHabits"
         />
