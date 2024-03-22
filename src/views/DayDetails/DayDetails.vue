@@ -2,8 +2,11 @@
 import { ref, watchEffect } from 'vue';
 import { differenceInDays, parseISO } from 'date-fns';
 import storageUtility from '../../utils/storageUtility';
-import { findHabitByName } from '../../utils/habitUtils';
-import { useToggleHabitCompletion } from '../../composables/useHabits';
+import {
+  useToggleHabitCompletion,
+  useHabitCompletion,
+  useHabitCompletionCounting
+} from '../../composables/useHabits';
 import HabitCard from './HabitCard.vue';
 
 const props = defineProps({
@@ -22,11 +25,6 @@ function loadDayData() {
 
   userHabits.value = data;
   recordedDayHabits.value = data.filter((habit) => habit.dateAdded <= props.id);
-}
-
-function isHabitCompletedToday(habit) {
-  const todayEntry = habit.dates.find((entry) => entry.date === props.id);
-  return todayEntry ? todayEntry.completed : false;
 }
 
 function countCompletedOccurrences(targetedHabit) {
@@ -94,8 +92,7 @@ watchEffect(() => {
           :key="index"
           :habit="habit"
           :toggleHabitCompletionStatus="toggleHabitCompletionStatus"
-          :isHabitCompletedToday="isHabitCompletedToday"
-          :countCompletedOccurrences="countCompletedOccurrences"
+          :countCompletedOccurrences="useHabitCompletionCounting"
           :countStreak="countStreak"
           :date="props.id"
         />
@@ -133,4 +130,3 @@ ul {
   margin-top: 2rem;
 }
 </style>
-../../utils/storageUtility ../../utils/habitUtils

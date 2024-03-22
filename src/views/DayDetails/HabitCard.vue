@@ -1,19 +1,28 @@
 <script setup>
+import {
+  useToggleHabitCompletion,
+  useHabitCompletion,
+  useHabitCompletionCounting
+} from '../../composables/useHabits';
+
 const props = defineProps({
   habit: Object,
   toggleHabitCompletionStatus: Function,
-  isHabitCompletedToday: Function,
+  // isHabitCompletedToday: Function,
   countCompletedOccurrences: Function,
   countStreak: Function,
   date: String
 });
+
+const { isHabitCompletedToday } = useHabitCompletion();
+const { toggleHabitCompletionStatus } = useToggleHabitCompletion();
 </script>
 
 <template>
   <div class="habit-card">
     <div class="habit-card-details">
       <h4>{{ habit.name }}</h4>
-      <h5>Completed Today: {{ isHabitCompletedToday(habit) ? 'Yes' : 'No' }}</h5>
+      <h5>Completed Today: {{ isHabitCompletedToday(habit, date) ? 'Yes' : 'No' }}</h5>
       <h5>Total times completed: {{ countCompletedOccurrences(habit) }}</h5>
       <div>
         <h5>Longest streak: {{ countStreak(habit).longestStreak }}</h5>
@@ -25,7 +34,7 @@ const props = defineProps({
       @click="props.toggleHabitCompletionStatus(props.habit, props.date)"
       type="button"
     >
-      {{ props.isHabitCompletedToday(props.habit) ? 'Mark as Incomplete' : 'Mark as Completed' }}
+      {{ isHabitCompletedToday(habit, date) ? 'Mark as Incomplete' : 'Mark as Completed' }}
     </button>
   </div>
 </template>

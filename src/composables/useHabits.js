@@ -1,16 +1,16 @@
 import storageUtility from '../utils/storageUtility';
-import { findHabitByName } from '../utils/habitUtils';
+import { findHabitByName, findHabitDateEntry } from '../utils/habitUtils';
 
 export function useToggleHabitCompletion(userHabits) {
-  const toggleHabitCompletionStatus = (habitToToggle, propsID) => {
+  const toggleHabitCompletionStatus = (habitToToggle, currentViewedDay) => {
     const currentHabit = findHabitByName(userHabits.value, habitToToggle.name);
-    let currentHabitDateEntry = currentHabit.dates.find((entry) => entry.date === propsID);
+    let currentHabitDateEntry = findHabitDateEntry(currentHabit, currentViewedDay);
 
     if (currentHabitDateEntry) {
       currentHabitDateEntry.completed = !currentHabitDateEntry.completed;
     } else {
       currentHabitDateEntry = {
-        date: propsID,
+        date: currentViewedDay,
         completed: true
       };
       currentHabit.dates.push(currentHabitDateEntry);
@@ -25,4 +25,22 @@ export function useToggleHabitCompletion(userHabits) {
   return { toggleHabitCompletionStatus };
 }
 
-export function test() {}
+export function useHabitCompletion() {
+  const isHabitCompletedToday = (habit, date) => {
+    const todayEntry = findHabitDateEntry(habit, date);
+    return todayEntry ? todayEntry.completed : false;
+  };
+
+  return { isHabitCompletedToday };
+}
+
+export function useHabitCompletionCounting(userHabits) {
+  const countCompletedOccurrences = (habit) => {
+    const habitDetails = findHabitByName(userHabits.value, habit.name);
+    const completedCount = habitDetails.dates.reduce((acc, date) => {
+      return acc + (date.completed ? 1 : 0);
+    }, 0);
+    return completedCount;
+  };
+  return { countCompletedOccurrences };
+}
