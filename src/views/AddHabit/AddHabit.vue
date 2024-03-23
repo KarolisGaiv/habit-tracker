@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   id: {
@@ -9,6 +10,8 @@ const props = defineProps({
 });
 
 const newHabit = ref('');
+const habitAddedMessage = ref('');
+const router = useRouter()
 
 function addHabit() {
   if (!newHabit.value.trim()) {
@@ -29,19 +32,29 @@ function addHabit() {
     data.push(newHabitObject);
     localStorage.setItem('user', JSON.stringify(data));
     newHabit.value = '';
+    habitAddedMessage.value = 'Habit added successfully!';
   } else {
     alert('Habit already exist');
   }
 }
+
+function goBack() {
+  router.go(-1)
+}
+
+
 </script>
 
 <template>
   <h1>Add Habit To Your Day</h1>
+  <div v-if="habitAddedMessage" class="success-msg"><p>{{ habitAddedMessage }}</p>
+  <button @click="goBack" type="button" class="go-back-btn">Go Back</button>
+  </div>
   <form class="wrapper" @submit.prevent="addHabit">
     <label for="habitName">Enter new habit</label>
     <div class="form-bottom">
       <input type="text" id="habitName" placeholder="Your new habit" v-model="newHabit" />
-    <button type="submit">Add Habit</button>
+    <button class="add-btn" type="submit">Add Habit</button>
     </div>
     
   </form>
@@ -54,7 +67,7 @@ h1 {
 
 .wrapper {
   max-width: 360px; 
-  margin: 40px auto; 
+  margin: 2rem auto; 
   padding: 20px;
   background-color: #ffffff; 
   border: 1px solid #eaeaea; 
@@ -81,7 +94,7 @@ input:focus {
   outline: none; 
 }
 
-button {
+.add-btn {
   background-color: #FF6B6B; 
   color: #ffffff; 
   padding: 12px 1.5rem; 
@@ -90,14 +103,37 @@ button {
   cursor: pointer;
   transition: background-color 0.3s; 
   margin-left: 0.5rem;
+  flex: 1;
 }
 
-button:hover {
+.add-btn:hover {
   background-color: #E25555;
+}
+
+.go-back-btn {
+  background-color: #f8f9fa; 
+  color: #6c757d; 
+  cursor: pointer;
+  border: 1px solid #dee2e6; 
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.go-back-btn:hover {
+  background-color: #e2e6ea; /* Slightly darker on hover for feedback */
+  color: #5a6268; /* Text color changes slightly on hover */
 }
 
 .form-bottom {
   display: flex;
   margin-bottom: 1rem;
+}
+
+.success-msg {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: #38A169; 
 }
 </style>
