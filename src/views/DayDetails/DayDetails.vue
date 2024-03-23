@@ -45,10 +45,9 @@ watchEffect(() => {
     <div v-else>This day has no recorded habits</div>
   </main>
 
-  <div class="btn-wrapper">
-    <p>placeholder for add habit btn</p>
+  <div class="bottom-wrapper">
     <RouterLink :to="{ name: 'AddHabit', params: { id } }"
-      ><button type="button">Add habit</button></RouterLink
+      ><button type="button" class="add-habit-btn">Add habit</button></RouterLink
     >
   </div>
 </template>
@@ -64,7 +63,8 @@ main {
   justify-content: space-between;
 }
 
-.home-btn {
+.home-btn,
+.add-habit-btn {
   background-color: rgb(38, 186, 38);
   color: white;
   font-weight: bold;
@@ -73,14 +73,16 @@ main {
     background-color 0.3s ease,
     border-color 0.3s ease;
   outline: none;
-  padding: 0 1rem;
+  padding: 1rem;
   border-radius: 5px;
   border: none;
   height: 100%;
 }
 
 .home-btn:focus,
-.home-btn:hover {
+.home-btn:hover,
+.add-habit-btn:focus,
+.add-habit-btn:hover {
   background-color: rgb(28, 125, 28);
 }
 
@@ -94,9 +96,11 @@ ul {
   padding: 0;
 }
 
-.btn-wrapper {
-  border: 1px solid red;
-  border-radius: 5px;
+.bottom-wrapper {
+  display: flex;
+  justify-content: center;
   margin-top: 2rem;
 }
+
+
 </style>

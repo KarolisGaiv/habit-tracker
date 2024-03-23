@@ -6,7 +6,7 @@
 </main>
   </template>
 
-  <style>
+  <style scoped>
 main {
     align-items: center;
     display: flex;
