@@ -36,7 +36,7 @@ function addHabit() {
 </script>
 
 <template>
-  <h1>Add new habit to your day</h1>
+  <h1>Add Habit To Your Day</h1>
   <p>selected day is {{ id }}</p>
   <form class="wrapper" @submit.prevent="addHabit">
     <label for="habitName">New habit</label>
