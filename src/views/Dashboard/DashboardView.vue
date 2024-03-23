@@ -18,12 +18,15 @@ loadAllData()
 
 <template>
   <h1>Your Habit List</h1>
-    <ul>
+    <ul v-if="allHabits.length > 0">
       <li class="habit-card" v-for="(habit, index) in allHabits" :key="index">
         {{ habit.name }}
         <button @click="deleteHabit(habit.name)" type="button" class="delete-btn">Delete habit</button>
       </li>
     </ul>
+    <div v-else>
+      <h3>Currently You have no habits saved</h3>
+      </div>
 </template>
 
 <style scoped>

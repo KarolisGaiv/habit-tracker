@@ -22,6 +22,10 @@ const router = createRouter({
       name: 'AddHabit',
       component: AddHabit,
       props: true
+    },
+    {
+      path: "/day/",
+      redirect: "/"
     }
     // {
     //   path: '/about',
