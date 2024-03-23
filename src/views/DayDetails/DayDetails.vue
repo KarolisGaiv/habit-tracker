@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
+import { RouterLink } from 'vue-router';
 import storageUtility from '../../utils/storageUtility';
 import HabitCard from './HabitCard.vue';
 
@@ -27,7 +28,9 @@ watchEffect(() => {
 
 <template>
   <main class="day-container">
-    <h3>Daily Habits</h3>
+    <div class="day-header"><h1>Daily Habits</h1>
+      <RouterLink :to="{name: 'Dashboard'}"><button type='button' class='home-btn'>Home</button></RouterLink>
+    </div>
     <div v-if="recordedDayHabits.length > 0" class="habits-wrapper">
       <ul>
         <HabitCard
@@ -55,6 +58,32 @@ main {
   display: flex;
   flex-direction: column;
 }
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.home-btn {
+  background-color: rgb(38, 186, 38);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+  outline: none;
+  padding: 0 1rem;
+  border-radius: 5px;
+  border: none;
+  height: 100%;
+}
+
+.home-btn:focus,
+.home-btn:hover {
+  background-color: rgb(28, 125, 28);
+}
+
 
 .habits-wrapper {
   margin: 1rem 0;
