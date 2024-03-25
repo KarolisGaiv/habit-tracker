@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
   id: {
@@ -10,12 +11,12 @@ const props = defineProps({
 });
 
 const newHabit = ref('');
-const habitAddedMessage = ref('');
 const router = useRouter();
+const toast = useToast();
 
 function addHabit() {
   if (!newHabit.value.trim()) {
-    alert("Habit can't be empty");
+    toast.error("Habit can't be empty");
     return;
   }
 
@@ -32,13 +33,9 @@ function addHabit() {
     data.push(newHabitObject);
     localStorage.setItem('user', JSON.stringify(data));
     newHabit.value = '';
-    habitAddedMessage.value = 'Habit added successfully!';
-
-    setTimeout(() => {
-      habitAddedMessage.value = '';
-    }, 2000);
+    toast.success('Habit added successfully!');
   } else {
-    alert('Habit already exist');
+    toast.error('Habit already exist');
   }
 }
 
@@ -49,11 +46,6 @@ function goBack() {
 
 <template>
   <h1>Add Habit To Your Day</h1>
-  <transition name="fade">
-    <div v-if="habitAddedMessage" class="success-msg">
-      <p>{{ habitAddedMessage }}</p>
-    </div>
-  </transition>
   <form class="wrapper" @submit.prevent="addHabit">
     <label for="habitName">Enter new habit</label>
     <div class="form-bottom">
@@ -133,26 +125,6 @@ input:focus {
 .form-bottom {
   display: flex;
   margin-bottom: 1rem;
-}
-
-.success-msg {
-  background-color: #38a169;
-  color: white;
-  border-radius: 0.5rem;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 
 .bottom-wrapper {

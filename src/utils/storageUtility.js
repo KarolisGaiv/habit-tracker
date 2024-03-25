@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const storageUtility = {
   getData(key = 'user') {
     try {
