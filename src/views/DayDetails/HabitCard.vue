@@ -106,8 +106,24 @@ const streakInfo = computed(() => countStreak());
       <h5>Completed Today: {{ isHabitCompletedToday(props.habit, props.date) ? 'Yes' : 'No' }}</h5>
       <h5>Total times completed: {{ countCompletedOccurrences(props.habit) }}</h5>
       <div>
-        <h5>Longest streak: {{ streakInfo.longestStreak }}</h5>
-        <h5>Current streak: {{ streakInfo.currentStreak }}</h5>
+        <h5
+          class="streak"
+          :class="{
+            'highlight-streak':
+              streakInfo.currentStreak === streakInfo.longestStreak && streakInfo.longestStreak >= 3
+          }"
+        >
+          Longest streak: {{ streakInfo.longestStreak }}
+        </h5>
+        <h5
+          class="streak"
+          :class="{
+            'highlight-streak':
+              streakInfo.currentStreak === streakInfo.longestStreak && streakInfo.longestStreak >= 3
+          }"
+        >
+          Current streak: {{ streakInfo.currentStreak }}
+        </h5>
       </div>
     </div>
     <button
@@ -150,5 +166,14 @@ const streakInfo = computed(() => countStreak());
 .complete-btn:hover,
 .complete-btn:focus {
   background-color: #e55a3c;
+}
+
+.streak {
+  transition: color 0.3s ease;
+}
+
+.highlight-streak {
+  color: #ffd700;
+  font-weight: bold;
 }
 </style>
