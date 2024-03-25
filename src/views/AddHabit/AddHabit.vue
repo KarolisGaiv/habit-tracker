@@ -52,7 +52,6 @@ function goBack() {
   <transition name="fade">
     <div v-if="habitAddedMessage" class="success-msg">
       <p>{{ habitAddedMessage }}</p>
-      <button @click="goBack" type="button" class="go-back-btn">Go Back</button>
     </div>
   </transition>
   <form class="wrapper" @submit.prevent="addHabit">
@@ -62,6 +61,9 @@ function goBack() {
       <button class="add-btn" type="submit">Add Habit</button>
     </div>
   </form>
+  <div class="bottom-wrapper">
+    <button @click="goBack" type="button" class="go-back-btn">Go Back</button>
+  </div>
 </template>
 
 <style scoped>
@@ -120,8 +122,7 @@ input:focus {
   cursor: pointer;
   border: 1px solid #dee2e6;
   border-radius: 0.5rem;
-  padding: 0.5rem;
-  margin-left: 0.5rem;
+  padding: 1rem;
 }
 
 .go-back-btn:hover {
@@ -149,5 +150,10 @@ input:focus {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.bottom-wrapper {
+  display: flex;
+  justify-content: center;
 }
 </style>
