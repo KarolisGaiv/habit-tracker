@@ -101,4 +101,10 @@ a {
 .router-link-active {
   background-color: #e0f155;
 }
+
+@media (width >= 1024px) {
+  .month-indicator {
+    font-size: 2.5rem;
+  }
+}
 </style>
