@@ -82,7 +82,18 @@ watch(selectedDate, (newValue) => {
 
 input {
   border: none;
-  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+}
+
+input:focus {
+  background-color: #fafafa;
+}
+
+input:hover {
+  background-color: #f5f5f5;
 }
 
 ul {
@@ -132,6 +143,10 @@ a {
 @media (width >= 1024px) {
   .month-indicator {
     font-size: 2.5rem;
+  }
+
+  .calendar-container {
+    margin-left: auto;
   }
 }
 </style>

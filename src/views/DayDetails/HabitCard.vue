@@ -128,6 +128,10 @@ const streakInfo = computed(() => countStreak());
     </div>
     <button
       class="complete-btn"
+      :class="{
+        'completed-btn': isHabitCompletedToday(props.habit, props.date),
+        'not-completed-btn': !isHabitCompletedToday(props.habit, props.date)
+      }"
       @click="toggleHabitCompletionStatus(props.habit, props.date)"
       type="button"
     >
@@ -165,7 +169,15 @@ const streakInfo = computed(() => countStreak());
 
 .complete-btn:hover,
 .complete-btn:focus {
-  background-color: #e55a3c;
+  filter: brightness(85%);
+}
+
+.not-completed-btn {
+  background-color: #32cd32;
+}
+
+.completed-btn {
+  background-color: #ff6347;
 }
 
 .streak {
