@@ -2,34 +2,39 @@
 import { ref } from 'vue';
 import storageUtility from '../../utils/storageUtility';
 
-const allHabits = ref([])
+const allHabits = ref([]);
 
 function loadAllData() {
-  allHabits.value = storageUtility.getData()
+  allHabits.value = storageUtility.getData();
 }
 
 function deleteHabit(habitName) {
-  storageUtility.deleteHabit(habitName)
-  loadAllData()
+  storageUtility.deleteHabit(habitName);
+  loadAllData();
 }
-loadAllData()
-
+loadAllData();
 </script>
 
 <template>
   <h1>Your Habit List</h1>
-    <ul v-if="allHabits.length > 0">
-      <li class="habit-card" v-for="(habit, index) in allHabits" :key="index">
-        {{ habit.name }}
-        <button @click="deleteHabit(habit.name)" type="button" class="delete-btn">Delete habit</button>
-      </li>
-    </ul>
-    <div v-else>
-      <h3>Currently You have no habits saved</h3>
-      </div>
+  <ul v-if="allHabits.length > 0">
+    <li class="habit-card" v-for="(habit, index) in allHabits" :key="index">
+      {{ habit.name }}
+      <button @click="deleteHabit(habit.name)" type="button" class="delete-btn">
+        Delete habit
+      </button>
+    </li>
+  </ul>
+  <div v-else class="information-msg">
+    <h3>Currently You have no habits saved</h3>
+    <h4>Select day to add a habit</h4>
+  </div>
 </template>
 
 <style scoped>
+h1 {
+  text-align: center;
+}
 
 ul {
   list-style: none;
@@ -66,4 +71,8 @@ ul {
   background-color: #e55a3c;
 }
 
+.information-msg {
+  text-align: center;
+  margin-top: 1rem;
+}
 </style>
