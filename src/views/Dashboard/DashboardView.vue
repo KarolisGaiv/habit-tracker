@@ -79,6 +79,11 @@ ul {
   margin-top: 1rem;
 }
 
+.habit-details {
+  max-width: 60%;
+  overflow-wrap: break-word;
+}
+
 .habit-list-enter-active,
 .habit-list-leave-active {
   transition: opacity 0.5s;
