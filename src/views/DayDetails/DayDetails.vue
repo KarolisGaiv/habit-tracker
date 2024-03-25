@@ -59,6 +59,7 @@ watchEffect(() => {
 main {
   display: flex;
   flex-direction: column;
+  margin-top: 3rem;
 }
 
 .day-header {
