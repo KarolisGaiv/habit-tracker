@@ -1,10 +1,11 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { RouterLink, useRoute } from 'vue-router';
+import { ref, computed, watch } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { format, parseISO } from 'date-fns';
 
 const selectedDate = ref(new Date());
 const route = useRoute();
+const router = useRouter();
 
 const historicalWeek = computed(() => {
   const days = [];
@@ -29,6 +30,11 @@ const currentMonth = computed(() => {
 });
 
 const isDayDetailsOpened = computed(() => route.name === 'DayDetails');
+
+watch(selectedDate, (newValue) => {
+  const formattedDate = format(newValue, 'yyyy-MM-dd');
+  router.push({ name: 'DayDetails', params: { id: formattedDate } });
+});
 </script>
 
 <template>
