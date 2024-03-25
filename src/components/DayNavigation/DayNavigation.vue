@@ -65,9 +65,14 @@ ul {
   flex-direction: column;
   list-style-type: none;
   cursor: pointer;
+  text-align: center;
 }
 
 .day-wrapper:hover {
   background: goldenrod;
+}
+
+.router-link-active {
+  background-color: #e0f155;
 }
 </style>
