@@ -32,7 +32,7 @@ const currentMonth = computed(() => {
 const isDayDetailsOpened = computed(() => route.name === 'DayDetails');
 
 const todayDate = computed(() => {
-  return new Date().toISOString().slice(0, 10);
+  return selectedDate.value.toISOString().slice(0, 10);
 });
 
 watch(selectedDate, (newValue) => {
