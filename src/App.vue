@@ -5,9 +5,7 @@ import DayNavigation from './components/DayNavigation/DayNavigation.vue';
 
 <template>
   <header>
-    <div class="wrapper">
-      <DayNavigation />
-    </div>
+    <DayNavigation />
   </header>
   <RouterView />
 </template>

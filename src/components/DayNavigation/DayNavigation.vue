@@ -42,11 +42,7 @@ watch(selectedDate, (newValue) => {
 </script>
 
 <template>
-  <div class="wrapper">
-    <div class="calendar-container" v-if="isDayDetailsOpened">
-      <label for="calendar"></label>
-      <input type="date" id="calendar" v-model="selectedDate" :max="todayDate" />
-    </div>
+  <div class="navigation-wrapper">
     <h2 class="month-indicator">{{ currentMonth }}</h2>
     <div class="days-container">
       <ul>
@@ -58,6 +54,10 @@ watch(selectedDate, (newValue) => {
         </li>
       </ul>
     </div>
+    <div class="calendar-container" v-if="isDayDetailsOpened">
+      <label for="calendar">Choose Another Date:</label>
+      <input type="date" id="calendar" v-model="selectedDate" :max="todayDate" />
+    </div>
   </div>
 </template>
 
@@ -67,11 +67,22 @@ watch(selectedDate, (newValue) => {
 }
 
 .calendar-container {
-  margin-bottom: 1rem;
+  align-items: center;
+  display: flex;
+  background-color: white;
+  border-radius: 5px;
+  padding: 0.5rem;
+  justify-content: space-between;
+  margin: 1rem 0;
 }
 
 .month-indicator {
   margin-bottom: 0.5rem;
+}
+
+input {
+  border: none;
+  border-radius: 5px;
 }
 
 ul {
@@ -104,6 +115,18 @@ a {
 
 .router-link-active {
   background-color: #e0f155;
+}
+
+@media (width >= 750px) {
+  .navigation-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calendar-container {
+    max-width: 60%;
+    margin-left: auto;
+  }
 }
 
 @media (width >= 1024px) {
