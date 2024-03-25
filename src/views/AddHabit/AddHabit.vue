@@ -136,10 +136,13 @@ input:focus {
 }
 
 .success-msg {
+  background-color: #38a169;
+  color: white;
+  border-radius: 0.5rem;
   align-items: center;
   display: flex;
   justify-content: center;
-  color: #38a169;
+  padding: 0.5rem;
 }
 
 .fade-enter-active,
