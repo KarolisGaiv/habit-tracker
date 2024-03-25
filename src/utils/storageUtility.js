@@ -4,7 +4,6 @@ const storageUtility = {
       const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : [];
     } catch (err) {
-      console.error('Error parsing localStorage data', err);
       return [];
     }
   },
@@ -19,14 +18,13 @@ const storageUtility = {
 
   deleteHabit(habitToDelete) {
     try {
-      const data = this.getData()
-      const updatedHabits = data.filter(habit => habit.name !== habitToDelete)
-      this.saveData(updatedHabits)
-    } catch(err) {
-      console.error("Error while trying to delete habit", err)
+      const data = this.getData();
+      const updatedHabits = data.filter((habit) => habit.name !== habitToDelete);
+      this.saveData(updatedHabits);
+    } catch (err) {
+      console.error('Error while trying to delete habit', err);
     }
   }
 };
-
 
 export default storageUtility;
