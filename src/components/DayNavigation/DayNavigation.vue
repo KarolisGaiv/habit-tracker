@@ -1,9 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { format, parseISO } from 'date-fns';
 
 const selectedDate = ref(new Date());
+const route = useRoute();
 
 const historicalWeek = computed(() => {
   const days = [];
@@ -26,14 +27,16 @@ const formatDay = (date) => {
 const currentMonth = computed(() => {
   return format(selectedDate.value, 'MMMM');
 });
+
+const isDayDetailsOpened = computed(() => route.name === 'DayDetails');
 </script>
 
 <template>
   <div class="wrapper">
-    <!-- <div class="calendar-container">
+    <div class="calendar-container" v-if="isDayDetailsOpened">
       <label for="calendar"></label>
       <input type="date" id="calendar" v-model="selectedDate" />
-    </div> -->
+    </div>
     <h2 class="month-indicator">{{ currentMonth }}</h2>
     <div class="days-container">
       <ul>
