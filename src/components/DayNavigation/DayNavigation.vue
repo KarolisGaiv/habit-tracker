@@ -17,7 +17,12 @@ const historicalWeek = computed(() => {
 });
 
 const formatDay = (date) => {
-  return format(parseISO(date), 'EEE d');
+  return {
+    month: format(parseISO(date), 'EEE'),
+    day: format(parseISO(date), 'd')
+  };
+
+  // return format(parseISO(date), 'EEE d');
 };
 
 const currentMonth = computed(() => {
@@ -31,13 +36,14 @@ const currentMonth = computed(() => {
       <label for="calendar"></label>
       <input type="date" id="calendar" v-model="selectedDate" />
     </div>
-    <span class="month-indicator">{{ currentMonth }}</span>
+    <h2 class="month-indicator">{{ currentMonth }}</h2>
     <div class="days-container">
       <ul>
         <li v-for="(day, index) in historicalWeek" :key="index" class="day-wrapper">
           <RouterLink :to="{ name: 'DayDetails', params: { id: day } }">
-            {{ formatDay(day) }}</RouterLink
-          >
+            <span>{{ formatDay(day).month }}</span>
+            <span>{{ formatDay(day).day }}</span>
+          </RouterLink>
         </li>
       </ul>
     </div>
@@ -53,23 +59,36 @@ const currentMonth = computed(() => {
   margin-bottom: 1rem;
 }
 
+.month-indicator {
+  margin-bottom: 0.5rem;
+}
+
 ul {
   display: flex;
   padding: 0;
 }
 
 .day-wrapper {
-  border: 1px solid black;
+  flex: 1;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  display: flex;
-  flex-direction: column;
   list-style-type: none;
+  justify-content: center;
   cursor: pointer;
   text-align: center;
+  background-color: white;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .day-wrapper:hover {
   background: goldenrod;
+}
+
+a {
+  display: flex;
+  flex-direction: column;
 }
 
 .router-link-active {
