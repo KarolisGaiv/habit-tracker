@@ -21,8 +21,6 @@ const formatDay = (date) => {
     month: format(parseISO(date), 'EEE'),
     day: format(parseISO(date), 'd')
   };
-
-  // return format(parseISO(date), 'EEE d');
 };
 
 const currentMonth = computed(() => {
@@ -32,10 +30,10 @@ const currentMonth = computed(() => {
 
 <template>
   <div class="wrapper">
-    <div class="calendar-container">
+    <!-- <div class="calendar-container">
       <label for="calendar"></label>
       <input type="date" id="calendar" v-model="selectedDate" />
-    </div>
+    </div> -->
     <h2 class="month-indicator">{{ currentMonth }}</h2>
     <div class="days-container">
       <ul>

@@ -19,7 +19,10 @@ loadAllData();
   <h1>Your Habit List</h1>
   <transition-group name="habit-list" tag="ul" v-if="allHabits.length > 0">
     <li class="habit-card" v-for="(habit, index) in allHabits" :key="index">
-      {{ habit.name }}
+      <div class="habit-details">
+        <h2>{{ habit.name }}</h2>
+        <h4>First time added: {{ habit.dateAdded }}</h4>
+      </div>
       <button @click="deleteHabit(habit.name)" type="button" class="delete-btn">
         Delete habit
       </button>
