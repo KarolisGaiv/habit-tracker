@@ -28,8 +28,11 @@ watchEffect(() => {
 
 <template>
   <main class="day-container">
-    <div class="day-header"><h1>Daily Habits</h1>
-      <RouterLink :to="{name: 'Dashboard'}"><button type='button' class='home-btn'>Home</button></RouterLink>
+    <div class="day-header">
+      <h1>Daily Habits</h1>
+      <RouterLink :to="{ name: 'Dashboard' }"
+        ><button type="button" class="home-btn">Home</button></RouterLink
+      >
     </div>
     <div v-if="recordedDayHabits.length > 0" class="habits-wrapper">
       <ul>
@@ -65,7 +68,7 @@ main {
 
 .home-btn,
 .add-habit-btn {
-  background-color: rgb(38, 186, 38);
+  background-color: rgb(38 186 38);
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -83,9 +86,8 @@ main {
 .home-btn:hover,
 .add-habit-btn:focus,
 .add-habit-btn:hover {
-  background-color: rgb(28, 125, 28);
+  background-color: rgb(28 125 28);
 }
-
 
 .habits-wrapper {
   margin: 1rem 0;
@@ -101,6 +103,4 @@ ul {
   justify-content: center;
   margin-top: 2rem;
 }
-
-
 </style>
