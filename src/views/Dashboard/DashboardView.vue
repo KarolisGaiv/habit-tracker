@@ -17,14 +17,14 @@ loadAllData();
 
 <template>
   <h1>Your Habit List</h1>
-  <ul v-if="allHabits.length > 0">
+  <transition-group name="habit-list" tag="ul" v-if="allHabits.length > 0">
     <li class="habit-card" v-for="(habit, index) in allHabits" :key="index">
       {{ habit.name }}
       <button @click="deleteHabit(habit.name)" type="button" class="delete-btn">
         Delete habit
       </button>
     </li>
-  </ul>
+  </transition-group>
   <div v-else class="information-msg">
     <h3>Currently You have no habits saved</h3>
     <h4>Select day to add a habit</h4>
@@ -74,5 +74,15 @@ ul {
 .information-msg {
   text-align: center;
   margin-top: 1rem;
+}
+
+.habit-list-enter-active,
+.habit-list-leave-active {
+  transition: opacity 0.5s;
+}
+
+.habit-list-enter,
+.habit-list-leave-to {
+  opacity: 0;
 }
 </style>
