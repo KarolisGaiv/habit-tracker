@@ -31,6 +31,10 @@ const currentMonth = computed(() => {
 
 const isDayDetailsOpened = computed(() => route.name === 'DayDetails');
 
+const todayDate = computed(() => {
+  return new Date().toISOString().slice(0, 10);
+});
+
 watch(selectedDate, (newValue) => {
   const formattedDate = format(newValue, 'yyyy-MM-dd');
   router.push({ name: 'DayDetails', params: { id: formattedDate } });
@@ -41,7 +45,7 @@ watch(selectedDate, (newValue) => {
   <div class="wrapper">
     <div class="calendar-container" v-if="isDayDetailsOpened">
       <label for="calendar"></label>
-      <input type="date" id="calendar" v-model="selectedDate" />
+      <input type="date" id="calendar" v-model="selectedDate" :max="todayDate" />
     </div>
     <h2 class="month-indicator">{{ currentMonth }}</h2>
     <div class="days-container">
