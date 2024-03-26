@@ -26,23 +26,15 @@ const router = createRouter({
     },
     // redirect
     {
-      path: "/day/",
-      redirect: "/"
+      path: '/day/',
+      redirect: '/'
     },
     // catch 404 (catches everything else not indicated above)
     {
-      path: "/:catchAll(.*)",
-      name: "NotFound",
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
       component: NotFound
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
   ]
 });
 
